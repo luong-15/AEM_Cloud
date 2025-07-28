@@ -1,6 +1,6 @@
 package com.adobe.aem.guides.wknd.core.models;
 
-import com.adobe.cq.wcm.core.components.models.Component;
+import com.adobe.aem.guides.wknd.core.models.VideoItemModel;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
@@ -18,11 +18,11 @@ import java.util.Optional;
 
 @Model(
     adaptables = SlingHttpServletRequest.class, 
-    adapters = {VideoPlaylistModel.class, Component.class}, 
+    adapters = VideoPlaylistModel.class, 
     resourceType = VideoPlaylistModel.RESOURCE_TYPE, 
     defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
 )
-public class VideoPlaylistModel implements Component {
+public class VideoPlaylistModel {
     
     public static final String RESOURCE_TYPE = "wknd/components/videoplaylist";
     private static final Logger LOGGER = LoggerFactory.getLogger(VideoPlaylistModel.class);
@@ -156,12 +156,10 @@ public class VideoPlaylistModel implements Component {
                 .orElse(RESOURCE_TYPE);
     }
 
-    @Override
     public String getExportedType() {
         return getResourceType();
     }
 
-    @Override
     public String getId() {
         return Optional.ofNullable(id).orElse("video-playlist-" + System.currentTimeMillis());
     }
