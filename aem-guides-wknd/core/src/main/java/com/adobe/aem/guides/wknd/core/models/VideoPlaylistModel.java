@@ -1,7 +1,5 @@
 package com.adobe.aem.guides.wknd.core.models;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.adobe.cq.wcm.core.components.models.Component;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
@@ -27,9 +25,7 @@ import java.util.Optional;
 public class VideoPlaylistModel implements Component {
     
     public static final String RESOURCE_TYPE = "wknd/components/videoplaylist";
-    
     private static final Logger LOGGER = LoggerFactory.getLogger(VideoPlaylistModel.class);
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Self
     private SlingHttpServletRequest request;
@@ -57,16 +53,12 @@ public class VideoPlaylistModel implements Component {
         try {
             videoItems = new ArrayList<>();
             
-            // Get current resource
             Resource currentResource = request.getResource();
-            
-            // Find videoItems resource in multifield
             Resource videoItemsResource = currentResource.getChild("videoItems");
+            
             if (videoItemsResource != null) {
-                // Iterate through all items in multifield
                 for (Resource itemResource : videoItemsResource.getChildren()) {
                     if (itemResource != null) {
-                        // Adapt each resource to VideoItemModel
                         VideoItemModel videoItem = itemResource.adaptTo(VideoItemModel.class);
                         if (videoItem != null && !videoItem.getVideoAssetPath().isEmpty()) {
                             videoItems.add(videoItem);
@@ -75,7 +67,6 @@ public class VideoPlaylistModel implements Component {
                 }
             }
 
-            // Enforce maxVideos limit if set
             if (maxVideos != null && maxVideos > 0 && videoItems.size() > maxVideos) {
                 videoItems = videoItems.subList(0, maxVideos);
             }
@@ -91,20 +82,37 @@ public class VideoPlaylistModel implements Component {
         }
     }
 
+    // Simplified JSON generation without Jackson
     public String getVideoItemsJson() {
-        try {
-            List<Object> videoItemsData = new ArrayList<>();
-            for (VideoItemModel item : videoItems) {
-                videoItemsData.add(item.toMap());
+        StringBuilder json = new StringBuilder("[");
+        for (int i = 0; i < videoItems.size(); i++) {
+            VideoItemModel item = videoItems.get(i);
+            if (i > 0) {
+                json.append(",");
             }
-            return OBJECT_MAPPER.writeValueAsString(videoItemsData);
-        } catch (JsonProcessingException e) {
-            LOGGER.error("Error converting video items to JSON", e);
-            return "[]";
+            json.append("{")
+                .append("\"videoUrl\":\"").append(escapeJson(item.getVideoUrl())).append("\",")
+                .append("\"customTitle\":\"").append(escapeJson(item.getCustomTitle())).append("\",")
+                .append("\"customDescription\":\"").append(escapeJson(item.getCustomDescription())).append("\",")
+                .append("\"posterImagePath\":\"").append(escapeJson(item.getPosterImagePath())).append("\",")
+                .append("\"autoplay\":").append(item.isAutoplay()).append(",")
+                .append("\"loop\":").append(item.isLoop()).append(",")
+                .append("\"muted\":").append(item.isMuted())
+                .append("}");
         }
+        json.append("]");
+        return json.toString();
     }
 
-    // Getters with null checks
+    private String escapeJson(String value) {
+        if (value == null) return "";
+        return value.replace("\"", "\\\"")
+                   .replace("\n", "\\n")
+                   .replace("\r", "\\r")
+                   .replace("\t", "\\t");
+    }
+
+    // Getters
     public String getVideoDisplayType() {
         return Optional.ofNullable(videoDisplayType).orElse("desktop_16_9");
     }
@@ -158,7 +166,6 @@ public class VideoPlaylistModel implements Component {
         return Optional.ofNullable(id).orElse("video-playlist-" + System.currentTimeMillis());
     }
 
-    // Getter for field id (not conflicting with Component.getId())
     public String getComponentId() {
         return Optional.ofNullable(id).orElse("");
     }

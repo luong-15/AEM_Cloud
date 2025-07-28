@@ -492,7 +492,7 @@ Bundle-DocURL:
 
             <properties>
                 <releaseRepository-Id>adobe-public-releases</releaseRepository-Id>
-                <releaseRepository-Name>Adobe Public Releases</releaseRepository-Name>
+                <releaseRepository-n>Adobe Public Releases</releaseRepository-n>
                 <releaseRepository-URL>https://repo.adobe.com/nexus/content/groups/public</releaseRepository-URL>
             </properties>
 
@@ -736,40 +736,6 @@ Bundle-DocURL:
                 </plugins>
             </build>
         </profile>
-        <!--
-        <profile>
-            <id>cm-java-11</id>
-            <activation>
-                  <property>
-                        <name>env.CM_BUILD</name>
-                  </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-toolchains-plugin</artifactId>
-                        <version>1.1</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>toolchain</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <toolchains>
-                                <jdk>
-                                    <version>1.11</version>
-                                    <vendor>oracle</vendor>
-                                </jdk>
-                            </toolchains>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
--->
     </profiles>
 
 
