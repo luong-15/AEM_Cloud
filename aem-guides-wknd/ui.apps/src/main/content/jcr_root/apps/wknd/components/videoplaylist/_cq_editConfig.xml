@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0"
+    cq:actions="[text:Video Playlist,-,edit,delete,insert,copy]"
+    cq:dialogMode="floating"
+    cq:disableTargeting="{Boolean}true"
+    cq:layout="editbar"
+    cq:emptyText="Configure video playlist"
+    jcr:primaryType="cq:EditConfig">
+    <cq:listeners
+        jcr:primaryType="cq:EditListenersConfig"
+        afterdelete="REFRESH_PARENT"
+        afteredit="REFRESH_SELF"
+        afterinsert="REFRESH_PARENT"
+        aftermove="REFRESH_PARENT"/>
+</jcr:root>

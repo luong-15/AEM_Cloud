@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="nt:unstructured"
+    jcr:title="Video Playlist"
+    sling:resourceType="cq/gui/components/authoring/dialog">
+    <content jcr:primaryType="nt:unstructured">
+        <items jcr:primaryType="nt:unstructured">
+            <tabs
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="granite/ui/components/coral/foundation/tabs"
+                maximized="{Boolean}true">
+                <items jcr:primaryType="nt:unstructured">
+                    <properties
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Thuộc tính"
+                        sling:resourceType="granite/ui/components/coral/foundation/container"
+                        margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <column
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/container">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <videoDisplayType
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                        fieldLabel="Kiểu hiển thị video"
+                                        name="./videoDisplayType">
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <mobile
+                                                jcr:primaryType="nt:unstructured"
+                                                text="Di động (9:16)"
+                                                value="mobile_9_16"/>
+                                            <desktop
+                                                jcr:primaryType="nt:unstructured"
+                                                text="Máy tính để bàn (16:9)"
+                                                value="desktop_16_9"/>
+                                            <custom
+                                                jcr:primaryType="nt:unstructured"
+                                                text="Tùy chỉnh"
+                                                value="custom"/>
+                                        </items>
+                                    </videoDisplayType>
+                                    <videoItems
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
+                                        fieldDescription="Thêm các video vào danh sách phát."
+                                        fieldLabel="Video">
+                                        <field
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/container"
+                                            name="./videoItems">
+                                            <items jcr:primaryType="nt:unstructured">
+                                                <column
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/container">
+                                                    <items jcr:primaryType="nt:unstructured">
+                                                        <videoAssetPath
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                                                            fieldLabel="Đường dẫn tài sản video"
+                                                            name="./videoAssetPath"
+                                                            required="{Boolean}true"
+                                                            rootPath="/content/dam"/>
+                                                        <customTitle
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                            fieldLabel="Tiêu đề tùy chỉnh"
+                                                            name="./customTitle"/>
+                                                        <customDescription
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/form/textarea"
+                                                            fieldLabel="Mô tả tùy chỉnh"
+                                                            name="./customDescription"/>
+                                                        <captionPath
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                                                            fieldLabel="Đường dẫn tệp phụ đề (.vtt)"
+                                                            name="./captionPath"
+                                                            rootPath="/content/dam"/>
+                                                        <audioTrackPath
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                                                            fieldLabel="Đường dẫn tệp âm thanh bổ sung (.mp3)"
+                                                            name="./audioTrackPath"
+                                                            rootPath="/content/dam"/>
+                                                        <posterImagePath
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                                                            fieldLabel="Đường dẫn hình ảnh poster"
+                                                            name="./posterImagePath"
+                                                            rootPath="/content/dam"/>
+                                                        <autoplay
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                            name="./autoplay"
+                                                            text="Tự động phát"
+                                                            uncheckedValue="{Boolean}false"
+                                                            value="{Boolean}true"/>
+                                                        <loop
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                            name="./loop"
+                                                            text="Lặp lại"
+                                                            uncheckedValue="{Boolean}false"
+                                                            value="{Boolean}true"/>
+                                                        <muted
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                            name="./muted"
+                                                            text="Tắt tiếng ban đầu"
+                                                            uncheckedValue="{Boolean}false"
+                                                            value="{Boolean}true"/>
+                                                        <viewerPreset
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                                            fieldLabel="Cài đặt trước trình xem Dynamic Media"
+                                                            name="./viewerPreset">
+                                                            <items jcr:primaryType="nt:unstructured">
+                                                                <default
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    text="Mặc định"
+                                                                    value="\0"/>
+                                                                <videoSocial
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    text="Video_Social"
+                                                                    value="Video_Social"/>
+                                                                <video360
+                                                                    jcr:primaryType="nt:unstructured"
+                                                                    text="Video_360"
+                                                                    value="Video_360"/>
+                                                            </items>
+                                                        </viewerPreset>
+                                                    </items>
+                                                </column>
+                                            </items>
+                                        </field>
+                                    </videoItems>
+                                    <commentMappingFile
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                                        fieldLabel="Tệp ánh xạ bình luận"
+                                        name="./commentMappingFile"
+                                        rootPath="/content/dam"/>
+                                    <id
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        fieldLabel="ID"
+                                        name="./id"/>
+                                </items>
+                            </column>
+                        </items>
+                    </properties>
+                </items>
+            </tabs>
+        </items>
+    </content>
+</jcr:root>

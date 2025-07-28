@@ -1,0 +1,91 @@
+<div data-sly-use.playlist="com.adobe.aem.guides.wknd.core.models.VideoPlaylistModel"
+     data-sly-use.clientlib="/libs/granite/sightly/templates/clientlib.html"
+     data-sly-use.templates="core/wcm/components/commons/v1/templates.html"
+     class="cmp-videoplaylist"
+     data-sly-attribute.id="${playlist.componentId @ context='attribute'}"
+     data-video-items="${playlist.videoItemsJson @ context='scriptString'}"
+     data-allow-autoplay="${playlist.allowAutoplay}"
+     data-max-videos="${playlist.maxVideos}">
+
+    <!-- Component wrapper -->
+    <sly data-sly-call="${templates.placeholder @ isEmpty=!playlist.hasVideoItems, classAppend='cmp-videoplaylist__placeholder'}"></sly>
+
+    <!-- Main content -->
+    <div data-sly-test="${playlist.hasVideoItems}">
+        <!-- Video Player Section -->
+        <div class="cmp-videoplaylist__player" data-sly-test="${playlist.hasCurrentVideo}">
+            <video id="mainVideoPlayer" class="cmp-videoplaylist__video" controls
+                   poster="${playlist.currentVideo.posterImagePath @ context='uri'}"
+                   data-sly-attribute.autoplay="${playlist.currentVideo.autoplay && playlist.allowAutoplay ? 'autoplay' : ''}"
+                   data-sly-attribute.loop="${playlist.currentVideo.loop ? 'loop' : ''}"
+                   data-sly-attribute.muted="${playlist.currentVideo.muted ? 'muted' : ''}">
+                <source src="${playlist.currentVideo.videoUrl @ context='uri'}" type="video/mp4">
+                
+                <!-- Subtitle track -->
+                <track data-sly-test="${playlist.currentVideo.captionPath}"
+                       kind="subtitles" 
+                       srclang="vi" 
+                       label="Tiếng Việt" 
+                       src="${playlist.currentVideo.captionPath @ context='uri'}">
+                
+                <p class="cmp-videoplaylist__fallback">Trình duyệt của bạn không hỗ trợ thẻ video.</p>
+            </video>
+
+            <!-- Video Info -->
+            <div class="cmp-videoplaylist__info">
+                <h3 class="cmp-videoplaylist__title" data-sly-test="${playlist.currentVideo.customTitle}">
+                    ${playlist.currentVideo.customTitle}
+                </h3>
+                <p class="cmp-videoplaylist__description" data-sly-test="${playlist.currentVideo.customDescription}">
+                    ${playlist.currentVideo.customDescription}
+                </p>
+            </div>
+        </div>
+
+        <!-- Playlist Section -->
+        <div class="cmp-videoplaylist__list" data-sly-test="${playlist.hasVideoItems}">
+            <h4 class="cmp-videoplaylist__list-title">Danh sách phát (${playlist.videoCount} video)</h4>
+            <ul class="cmp-videoplaylist__items">
+                <sly data-sly-list.item="${playlist.videoItems}">
+                    <li class="cmp-videoplaylist__item ${itemList.index == 0 ? 'active' : ''}"
+                        data-video-index="${itemList.index}"
+                        data-video-url="${item.videoUrl @ context='uri'}"
+                        data-video-title="${item.customTitle @ context='attribute'}"
+                        data-video-description="${item.customDescription @ context='attribute'}"
+                        data-video-poster="${item.posterImagePath @ context='uri'}"
+                        data-video-autoplay="${item.autoplay}"
+                        data-video-loop="${item.loop}"
+                        data-video-muted="${item.muted}">
+                        
+                        <div class="cmp-videoplaylist__item-thumbnail" data-sly-test="${item.posterImagePath}">
+                            <img src="${item.posterImagePath @ context='uri'}" 
+                                 alt="${item.customTitle || 'Video thumbnail'}"
+                                 class="cmp-videoplaylist__thumbnail-image">
+                        </div>
+                        
+                        <div class="cmp-videoplaylist__item-content">
+                            <span class="cmp-videoplaylist__item-number">${itemList.index + 1}.</span>
+                            <div class="cmp-videoplaylist__item-info">
+                                <span class="cmp-videoplaylist__item-title">
+                                    ${item.customTitle || item.videoAssetPath @ context='text'}
+                                </span>
+                                <span class="cmp-videoplaylist__item-description" data-sly-test="${item.customDescription}">
+                                    ${item.customDescription @ context='text'}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- Play indicator -->
+                        <div class="cmp-videoplaylist__item-indicator ${itemList.index == 0 ? 'playing' : ''}">
+                            <span class="play-icon">▶</span>
+                        </div>
+                    </li>
+                </sly>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Include client libraries -->
+    <sly data-sly-call="${clientlib.css @ categories='wknd.videoplaylist'}"></sly>
+    <sly data-sly-call="${clientlib.js @ categories='wknd.videoplaylist'}"></sly>
+</div>

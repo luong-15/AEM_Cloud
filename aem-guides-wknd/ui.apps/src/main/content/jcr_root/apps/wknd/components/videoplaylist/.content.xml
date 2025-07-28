@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Component"
+    jcr:title="Video Playlist"
+    jcr:description="A component for displaying video playlists with custom controls"
+    componentGroup="WKND.Content"
+    sling:resourceSuperType="core/wcm/components/component/v1/component"
+    allowedParents="[*/parsys,*/responsivegrid]"
+    cq:isContainer="{Boolean}false"
+    cq:templatePath="/apps/wknd/components/videoplaylist"
+    cq:icon="videoCamera"/>
