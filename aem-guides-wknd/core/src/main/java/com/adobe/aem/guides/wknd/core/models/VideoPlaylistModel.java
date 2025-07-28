@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.adobe.cq.wcm.core.components.models.Component;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
-import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.injectorspecific.Self;
@@ -19,12 +18,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-@Model(adaptables = SlingHttpServletRequest.class, 
-       adapters = {VideoPlaylistModel.class, Component.class}, 
-       resourceType = "wknd/components/videoplaylist", 
-       defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
+@Model(
+    adaptables = SlingHttpServletRequest.class, 
+    adapters = {VideoPlaylistModel.class, Component.class}, 
+    resourceType = VideoPlaylistModel.RESOURCE_TYPE, 
+    defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL
+)
 public class VideoPlaylistModel implements Component {
+    
+    public static final String RESOURCE_TYPE = "wknd/components/videoplaylist";
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(VideoPlaylistModel.class);
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Self
     private SlingHttpServletRequest request;
@@ -45,7 +50,6 @@ public class VideoPlaylistModel implements Component {
     private Integer maxVideos;
 
     private List<VideoItemModel> videoItems;
-
     private VideoItemModel currentVideo;
 
     @PostConstruct
@@ -53,16 +57,16 @@ public class VideoPlaylistModel implements Component {
         try {
             videoItems = new ArrayList<>();
             
-            // Lấy resource hiện tại
+            // Get current resource
             Resource currentResource = request.getResource();
             
-            // Tìm resource videoItems trong multifield
+            // Find videoItems resource in multifield
             Resource videoItemsResource = currentResource.getChild("videoItems");
             if (videoItemsResource != null) {
-                // Duyệt qua tất cả các item trong multifield
+                // Iterate through all items in multifield
                 for (Resource itemResource : videoItemsResource.getChildren()) {
                     if (itemResource != null) {
-                        // Adapt mỗi resource thành VideoItemModel
+                        // Adapt each resource to VideoItemModel
                         VideoItemModel videoItem = itemResource.adaptTo(VideoItemModel.class);
                         if (videoItem != null && !videoItem.getVideoAssetPath().isEmpty()) {
                             videoItems.add(videoItem);
@@ -87,8 +91,6 @@ public class VideoPlaylistModel implements Component {
         }
     }
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
     public String getVideoItemsJson() {
         try {
             List<Object> videoItemsData = new ArrayList<>();
@@ -108,7 +110,7 @@ public class VideoPlaylistModel implements Component {
     }
 
     public List<VideoItemModel> getVideoItems() {
-        return Collections.unmodifiableList(videoItems);
+        return videoItems != null ? Collections.unmodifiableList(videoItems) : Collections.emptyList();
     }
 
     public String getCommentMappingFile() {
@@ -132,18 +134,18 @@ public class VideoPlaylistModel implements Component {
     }
 
     public boolean hasVideoItems() {
-        return !videoItems.isEmpty();
+        return videoItems != null && !videoItems.isEmpty();
     }
 
     public int getVideoCount() {
-        return videoItems.size();
+        return videoItems != null ? videoItems.size() : 0;
     }
 
     public String getResourceType() {
         return Optional.ofNullable(request)
                 .map(SlingHttpServletRequest::getResource)
                 .map(Resource::getResourceType)
-                .orElse("wknd/components/videoplaylist");
+                .orElse(RESOURCE_TYPE);
     }
 
     @Override
@@ -156,7 +158,7 @@ public class VideoPlaylistModel implements Component {
         return Optional.ofNullable(id).orElse("video-playlist-" + System.currentTimeMillis());
     }
 
-    // Getter cho field id (không trùng với Component.getId())
+    // Getter for field id (not conflicting with Component.getId())
     public String getComponentId() {
         return Optional.ofNullable(id).orElse("");
     }

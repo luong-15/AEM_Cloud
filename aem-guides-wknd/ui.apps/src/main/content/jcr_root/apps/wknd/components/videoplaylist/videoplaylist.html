@@ -1,7 +1,7 @@
 <div data-sly-use.playlist="com.adobe.aem.guides.wknd.core.models.VideoPlaylistModel"
      data-sly-use.clientlib="/libs/granite/sightly/templates/clientlib.html"
      data-sly-use.templates="core/wcm/components/commons/v1/templates.html"
-     class="cmp-videoplaylist"
+     class="cmp-videoplaylist cmp-videoplaylist--${playlist.videoDisplayType}"
      data-sly-attribute.id="${playlist.componentId @ context='attribute'}"
      data-video-items="${playlist.videoItemsJson @ context='scriptString'}"
      data-allow-autoplay="${playlist.allowAutoplay}"
@@ -47,7 +47,7 @@
             <h4 class="cmp-videoplaylist__list-title">Danh sách phát (${playlist.videoCount} video)</h4>
             <ul class="cmp-videoplaylist__items">
                 <sly data-sly-list.item="${playlist.videoItems}">
-                    <li class="cmp-videoplaylist__item ${itemList.index == 0 ? 'active' : ''}"
+                    <li class="cmp-videoplaylist__item ${itemList.index == 0 ? 'cmp-videoplaylist__item--active' : ''}"
                         data-video-index="${itemList.index}"
                         data-video-url="${item.videoUrl @ context='uri'}"
                         data-video-title="${item.customTitle @ context='attribute'}"
@@ -64,7 +64,8 @@
                         </div>
                         
                         <div class="cmp-videoplaylist__item-content">
-                            <span class="cmp-videoplaylist__item-number">${itemList.index + 1}.</span>
+                            <!-- Use itemList.count instead of itemList.index + 1 -->
+                            <span class="cmp-videoplaylist__item-number">${itemList.count}.</span>
                             <div class="cmp-videoplaylist__item-info">
                                 <span class="cmp-videoplaylist__item-title">
                                     ${item.customTitle || item.videoAssetPath @ context='text'}
