@@ -203,7 +203,7 @@
                         <artifactId>filevault-package-maven-plugin</artifactId>                    
                         <extensions>true</extensions>
                         <configuration>
-                            <finalName>aem-guides-wknd.all-${version}-classic</finalName>
+                            <finalName>aem-guides-wknd.all-${project.version}-classic</finalName>
                             <group>com.adobe.aem.guides</group>
                             <embeddeds>
                                 <embedded>

@@ -214,9 +214,7 @@ Bundle-DocURL:
                 <dependency>
                     <groupId>com.adobe.aem</groupId>
                     <artifactId>uber-jar</artifactId>
-                    <version>${uber.jar.version}</version>
                     <classifier>apis</classifier>
-                    <scope>provided</scope>
                 </dependency>
                 <!-- OSGi Dependencies -->
                 <dependency>
@@ -342,6 +340,12 @@ Bundle-DocURL:
                     <groupId>com.day.cq.wcm</groupId>
                     <artifactId>cq-wcm-taglib</artifactId>
                     <version>5.7.4</version>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>com.day.cq.wcm</groupId>
+                    <artifactId>cq-wcm-api</artifactId>
+                    <version>5.6.6</version>
                     <scope>provided</scope>
                 </dependency>
                 <dependency>
